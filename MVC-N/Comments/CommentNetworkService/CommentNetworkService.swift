@@ -12,11 +12,16 @@ class CommentNetworkSerwice {
     
     private init() {}
     
-    static func getComments(complition: @escaping(GetCommentResponce) -> () ) {
+    static func getComments(completion: @escaping(GetCommentResponce) -> () ) {
         guard let url = URL(string: "https://jsonplaceholder.typicode.com/posts/1/comments") else { return }
         
         NetworkService.shared.getData(url: url) { (json) in
-            
+            do {
+                let response = try GetCommentResponce(json: json)
+                completion(response)
+            } catch {
+                print(error)
+            }
         }
     }
 }
